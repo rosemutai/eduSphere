@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+{% comment %} {% if user.is_teacher %} {% endcomment %}
+
+    <div class="main-content col-span-6 ">
+    
+        <div class="grid grid-cols-12 lg:grid-cols-7 h-full gap-2 lg:gap-6">
+            <div class="main col-span-full sm:col-span-8 lg:col-span-5 flex flex-col gap-2 mt-2">
+                <div class="top-banner p-3 mx-3 lg:mx-0 bg-blue-400 flex justify-between h-32 text-white">
+                    <div class="flex flex-col items justify-center gap-0.5 lg:gap-2">
+                        <h1 class="font-semibold uppercase">{{teacher.get_title_display}}. {{teacher.user.first_name}} {{teacher.user.last_name}}</h1>
+                        <p class="text-white text-normal font-semibold">Class teacher of: {{teacher.schoolclass}}</p>
+                    </div>
+                    <div class="image-edit-btn flex items-center gap-2">
+                        <a href="{% url 'edit-teacher' teacher.user.id %}" class="hover:transform hover:scale-105
+                            hover:transition hover:duration-150">
+                        <i class="fas fa-pencil-alt edit-icon"></i>
+                        </a>
+                        <img class="w-10 h-10 lg:w-20 lg:h-20 rounded-full" src="{{ teacher.teacher_image.url }}" alt="Emily" class="w-8 h-8 rounded-full">
+                    </div>
+                </div>
+
+                <div class="shadow shadow-gray-100 border border-gray-100 text-gray-500 p-3 mb-3">
+                    <h2 class="text-gray-400 w-fit text-xl font-medium my-4
+                        border-0 border-b border-b-gray-300">Personal Info</h2>
+                    <div class="info-details flex flex-col gap-2 ">
+                        
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Gender:</p>
+                            <p class="w-1/2">{{ teacher.get_gender_display }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Email:</p>
+                            <p class="w-1/2">{{ teacher.user.email }}</p>
+                        </div>
+                        
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Department:</p>
+                            <p class="w-1/2">{{ teacher.teachers_department.name }}</p>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="p-4 col-span-full sm:col-span-4 lg:col-span-2 h-full low-300 ">
+                <div class="teacher-classes flex flex-col justify-between gap-2 border-gray-100 
+                    px-4 py-8 shadow shadow-gray-200">
+                    <div class="attendace flex gap-0.5 justify-between">
+                        <h5 class="font-semibold">Total classes</h5>
+                        <p class="text-xl font-bold text-center text-[#FF9149]">{{classes_count}}</p>
+                    </div>
+                    <hr class="bordr-0 border-b bg-gray-200 border-gray-300">
+                    <div class="total-classes flex flex-col gap-0.5 justify-center">
+                        <h5 class="font-semibold">My Classes</h5>
+                        <ul>
+                            {% for class in teachers_classes %}
+                                <li class="text-sm text-gray-500 list-disc list-inside">
+                                    {{ class.class_assigned.name}} {{ class.class_assigned.get_stream_display}} - {{ class.name }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    
+                </div>
+
+                <div class="announcements mt-7 ">
+                    <h3 class="font-semibold text-blue-400 text-lg"> Announcements</h3>
+                    <ul>
+                        {% if latest_announcements %}
+                            {% for announcement in latest_announcements %}
+                                <li class="listt text-gray-500 list-none text-sm min-h-10 py-1 border-0 border-b border-b-gray-200">{{announcement.title}}
+                                    <span class="text-gray-400 text-sm">{{ announcement.created_at|naturaltime }}</span></li>
+                            
+                            {% endfor %}
+                            {% else %}
+                            <p>No recent activities</p>
+                        {% endif %}
+                    </ul>
+                    
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+{% comment %} {% endif %} {% endcomment %}
+
+{% endblock content %}
+

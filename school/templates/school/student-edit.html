@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="flex min-h-full flex-col justify-center px-6 pb-12 lg:px-8 ">
+        <div class="sm:mx-auto sm:w-full border border-gray-100 p-6 rounded-md
+            shadow shadow-gray-100 lg:w-2/3">
+            
+            <h3 class="text-gray-400 text-xl font-bold my-4">Edit Student</h3>
+            {% comment %} action="{% url 'edit-student' student_to_edit.id %}" {% endcomment %}
+            <form class="space-y-6 shadow-gray-400 w-full" 
+                method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% comment %} Names {% endcomment %}
+                <div class="names flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} Firstname  {% endcomment %}
+                    <div class="firstname md:w-1/2">
+                        <label for="firstname" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">First Name</label>
+                        <input
+                            type="text"
+                            name="firstname"
+                            id="firstname"
+                            value={{student_to_edit.user.first_name}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+
+                    {% comment %} Last name  {% endcomment %}
+                    <div class="lastname md:w-1/2">
+                        <label for="lastname" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Last Name</label>
+                        <input
+                            type="text"
+                            name="lastname"
+                            id="lastname"
+                            value={{student_to_edit.user.last_name}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                            />
+                    </div>
+                </div>
+
+                 {% comment %} username & email{% endcomment %}
+                 <div class="username flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} username  {% endcomment %}
+                    <div class="username md:w-1/2">
+                        <label for="username" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Userame</label>
+                        <input
+                            type="text"
+                            name="username"
+                            id="username"
+                            value={{student_to_edit.user.username}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+
+                    {% comment %} Email  {% endcomment %}
+                    <div class="email md:w-1/2">
+                        <label for="email" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={{student_to_edit.user.email}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                            />
+                    </div>
+                </div>
+
+                {% comment %} student image password {% endcomment %}
+                <div class="student-image flex md:flex-row flex-col gap-2 w-full">
+                    <div class="md:w-1/2">
+                        <label for="student-image" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Student image</label>
+                        <input
+                            type="file"
+                            name="student-image"
+                            id="student-image"
+                            value={{student_to_edit.student_image}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+
+                    <div class="md:w-1/2">
+                        <label for="password" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            value={{student_to_edit.user.password}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+                    
+                </div>
+
+
+                {% comment %} Gender & Date of birth {% endcomment %}
+                <div class="gender-dob flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} Gender  {% endcomment %}
+                    <div class="gender md:w-1/2">
+                        <label for="gender" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Gender</label>
+                        <select
+                            type="text"
+                            name="gender"
+                            id="gender"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        >
+                            <option value="">Select gender</option>
+                            <option value="Female" {% if student_to_edit.gender == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Male" {% if student_to_edit.gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Others" {% if student_to_edit.gender == 'Others' %}selected{% endif %}>Others</option>
+                        </select> 
+                    </div>
+
+                    {% comment %} Date of Birth {% endcomment %}
+                    <div class="date-of-birth md:w-1/2">
+                        <label for="date-of-birth" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Date of Birth</label>
+                        <input
+                            type="date"
+                            name="date-of-birth"
+                            id="date-of-birth"
+                            value={{birthdate_formatted}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                            />
+                    </div>
+                </div>
+
+                {% comment %} class & religion {% endcomment %}
+                <div class="class-religion flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} Student-Class  {% endcomment %}
+                    <div class="student-class md:w-1/2">
+                        <label for="student-class" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Student's Class</label>
+                        <select
+                            type="text"
+                            name="student-class"
+                            id="student-class"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        >
+                        <option value="">Select class</option>
+
+                        {% for sc in schoolclasses %}
+                            <option value="{{sc.id}}">{{sc.name}} - {{sc.get_stream_display}}</option>
+                        {% endfor %}
+        
+                        </select> 
+                    </div>
+
+                    {% comment %} Religion  {% endcomment %}
+                    <div class="religion md:w-1/2">
+                        <label for="religion" class="block text-base font-semibold md:font-normal text-gray-500 mb-1">Religion</label>
+                        <input
+                            type="text"
+                            name="religion"
+                            id="religion"
+                            value={{student_to_edit.religion}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                            />
+                    </div>
+                </div>
+
+                {% comment %} admission {% endcomment %}
+                <div class="admissionnumber-joining-date flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} admission-number  {% endcomment %}
+                    <div class="admission-number md:w-1/2">
+                        <label for="admission-number" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Admission Number</label>
+                        <input
+                            type="text"
+                            name="admission-number"
+                            id="admission-number"
+                            value={{student_to_edit.admission_number}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+
+                    {% comment %} Joining Date {% endcomment %}
+                    <div class="joining-date md:w-1/2">
+                        <label for="joining-date" class="block text-base font-semibold md:font-normal text-gray-500 mb-1">Joining Date</label>
+                        <input
+                            type="date"
+                            name="joining-date"
+                            id="joining-date"
+                            value={{joiningdate_formatted}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-sm placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                            />
+                    </div>
+                </div>
+                
+                {% comment %} parent section {% endcomment %}
+                <h3 class="text-gray-400 text-xl font-bold mt-8 mb-4">Parent's Details</h3>
+                {% comment %} Names {% endcomment %}
+
+                <div class="father-names flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} parent Firstname  {% endcomment %}
+                    <div class="fathername md:w-1/2">
+                        <label for="father-name" class="block text-base font-semibold md:font-normal text-gray-500 mb-1">Father's Name</label>
+                        <input
+                            type="text"
+                            name="father-name"
+                            id="father-name"
+                            value="{{students_father.name}}"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+
+                    {% comment %} fathers mobile {% endcomment %}
+                    <div class="fathermobile md:w-1/2">
+                        <label for="father-mobile" class="block text-base font-semibold md:font-normal text-gray-500 mb-1">Father's mobile</label>
+                        <input
+                            type="text"
+                            name="father-mobile"
+                            id="father-mobile"
+                            value={{students_father.mobile}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+                </div>
+                
+                <div class="mother-names flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} parent Firstname  {% endcomment %}
+                    <div class="mother-name md:w-1/2">
+                        <label for="mother-name" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Mother's Name</label>
+                        <input
+                            type="text"
+                            name="mother-name"
+                            id="mother-name"
+                            value="{{students_mother.name}}"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+
+                    {% comment %} fathers mobile {% endcomment %}
+                    <div class="mothermobile md:w-1/2">
+                        <label for="father-mobile" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Mother's mobile</label>
+                        <input
+                            type="text"
+                            name="mother-mobile"
+                            id="mother-mobile"
+                            value={{students_mother.mobile}}
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        />
+                    </div>
+                </div>
+
+                 {% comment %} addresses {% endcomment %}
+                 <div class="adresses flex md:flex-row flex-col gap-2 w-full">
+                    {% comment %} relationship-with-student  {% endcomment %}
+                    <div class="present-address md:w-1/2">
+                        <label for="present-address" class="block text-base font-semibold md:font-normal text-gray-500 mb-1">Present Address</label>
+                        <textarea
+                            name="present-address"
+                            id="present-address"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        >{{students_mother.present_address}}</textarea>
+                    </div>
+
+                    {% comment %} permanent-address {% endcomment %}
+                    <div class="permanent-address md:w-1/2">
+                        <label for="permanent-address" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Permanent Address</label>
+                        <textarea
+                            name="permanent-address"
+                            id="permanent-address"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        >{{students_mother.permanent_address}}</textarea>
+                    </div>
+                </div>
+               
+                <div >
+                    <button
+                        type="submit"
+                        class="flex justify-center rounded-md w-56  bg-blue-400 px-3 py-1.5 text-sm/6 
+                            font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        Submit
+                    </button>
+                </div>
+                 
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+<div>
+    <button
+        type="submit"
+        class="flex justify-center rounded-md w-56  bg-blue-400 px-3 py-1.5 text-sm/6 focus-visible:outline-blue-600
+            font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 "
+    >
+        Submit
+    </button>
+</div>

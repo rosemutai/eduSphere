@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="main-content lg:col-span-6 text-gray-500 ">        
+        <div class="grid grid-cols-12 lg:grid-cols-7 h-full gap-3">
+            <div class="col-span-full md:col-span-8 lg:col-span-5">
+                <div class="top-banner mx-3 lg:mx-0 p-3 bg-blue-400 wl h-24 text-white flex justify-between">
+                    <div class="flex flex-col gap-2">
+                        <h2 class="font-bold uppercase"> {{department.name}} Department</h2>
+                        <h3 class="font-semibold"> 
+                            Department Head: {{department.head.get_title_display}}. {{department.head.user.first_name}} {{department.head.user.last_name}}
+                        </h3>
+                    </div>
+                    <a href="{% url 'edit-department' department.id %}" class="hover:transform hover:scale-105
+                        hover:transition hover:duration-150">
+                         <i class="fas fa-pencil-alt edit-icon"></i>
+                    </a>
+                </div>
+                
+                <div class="more-details p-3 flex flex-col gap-5">
+                    <p class="description">{{ department.description }}</p>
+
+                    <div class="teachers">
+                        <h4 class="font-semibold text-gray-400 text-lg">Department teachers</h4>
+                        <ul class="list-decimal list-inside">
+                            {% for teacher in department_teachers %}
+                                <li><a href="">{{ teacher.get_title_display }}. {{ teacher.user.first_name }} {{ teacher.user.last_name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class="p-4 col-span-full md:col-span-4 lg:col-span-2  h-full low-300 ">
+                <div class="student-stats flex justify-between gap-2 border-gray-100 
+                    px-4 py-8 h-14 shadow shadow-gray-200">
+                    <div class="absentism flex flex-col gap-0.5 justify-center">
+                        <h5 class="font-semibold">Teachers</h5>
+                        <p class="text-[#AFDDFF] text-xl font-bold text-center">{{teachers_count }}</p>
+                    </div>
+                    <div class="attendace flex flex-col gap-0.5 justify-center">
+                        <h5 class="font-semibold">Absent</h5>
+                        <p class="text-xl font-bold text-center text-[#FF9149]">04</p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content %}

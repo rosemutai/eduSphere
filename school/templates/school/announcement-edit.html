@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="flex min-h-full flex-col justify-center px-6 pb-12 lg:px-8 ">
+        <div class="sm:mx-auto  border border-gray-100 p-6 rounded-md
+            shadow shadow-gray-100 md:w-1/2 lg:w-2/3">
+           
+            <h3 class="text-gray-400 text-xl font-bold my-4">Create an Announcement</h3>
+
+            <form class="space-y-6 shadow-gray-400 w-full" 
+                method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% comment %} Name {% endcomment %}
+                <div class="title">
+                    <label for="title" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Title</label>
+                    <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        value="{{ announcement.title }}"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+
+                {% comment %} Message  {% endcomment %}
+                <div class="Message">
+                    <label for="message" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Message</label>
+                    <textarea
+                        type="text"
+                        name="message"
+                        id="message"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    >{{ announcement.message }}</textarea>
+                </div>
+
+                <div class="target-audience">
+                        <label for="target-audience" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Audience</label>
+                        <select
+                            type="text"
+                            name="target-audience"
+                            id="target-audience"
+                            required
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                                -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                focus:outline-blue-600 sm:text-sm/6"
+                        >
+                            <option value="">-- Select Audience--</option>
+                            <option value="Everyone" {% if announcement.target_audience == 'Everyone' %} selected {% endif %}>Everyone</option>
+                            <option value="Students" {% if announcement.target_audience == 'Students' %} selected {% endif %}>Students</option>
+                            <option value="Staff" {% if announcement.target_audience == 'Staff' %} selected {% endif %}>Staff</option>
+                        </select> 
+                </div>
+                     
+                <div>
+                    <button
+                        type="submit"
+                        class="flex justify-center mx-auto rounded-md w-56  bg-blue-400 px-3 py-1.5 text-sm   
+                            font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        Submit
+                    </button>
+                </div>
+                 
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

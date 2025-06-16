@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <div class="main-content col-span-6 ">
+        <div class="grid grid-cols-12 lg:grid-cols-7 h-full  gap-2 lg:gap-6">
+            <div class="top-banner p-3 col-span-full mx-3
+                lg:mx-0 md:col-span-8 sm:col-span-8 lg:col-span-5">
+                <div class="p-3 bg-blue-400 text-white h-32 flex justify-between items-center mb-3">
+                    <div class="left-section">
+                        <h1 class="font-semibold text-2xl uppercase">{{student.user.first_name}} {{ student.user.last_name}}</h1>
+                        <div class="flex gap-2 mt-2">
+                            <p class="font-medium text-sm">ADMISSION NO. {{student.admission_number}}</p>
+                            <p class="font-medium text-sm">CLASS: {{student.student_class.name}} {{student.student_class.get_stream_display}}</p>
+                        </div>
+                    </div>
+                    <div class="right-section flex items-center gap-2">
+                        {% if request.user.is_admin %}
+                        {% comment %}  {% endcomment %}
+                            <a href="{% url 'edit-student' student.user.id %}" class="bg-white text-blue-400 rounded
+                                p-2 text-center w-26 text-sm h-10 hover:transition hover:duration-150
+                                ">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'add-results' student.user.id %}" class=" bg-white text-blue-400 rounded
+                                p-2 text-center w-28 text-sm h-10 hover:transition hover:duration-150">
+                                Add Results
+                            </a>
+                        {% endif %}
+                        <img src="{{student.student_image.url}}" alt="{{student.user.first_name}}" class="rounded-full w-16 h-16">
+                    </div>
+                </div>
+
+                <div class="shadow shadow-gray-100 border border-gray-100 text-gray-500 p-3 mb-3">
+                    <h2 class="text-gray-400 w-fit text-xl font-medium my-4
+                        border-0 border-b border-b-gray-300">Personal Info</h2>
+                    <div class="info-details flex flex-col gap-2 ">
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Date of Birth:</p>
+                            <p class="w-1/2">{{ student.date_of_birth }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Gender:</p>
+                            <p class="w-1/2">{{ student.get_gender_display }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Email:</p>
+                            <p class="w-1/2">{{ student.user.email }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Mother:</p>
+                            <p class="w-1/2">{{ students_mum.name }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Mother's Phone:</p>
+                            <p class="w-1/2">{{ students_mum.mobile }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Father:</p>
+                            <p class="w-1/2">{{ students_dad.name }}</p>
+
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Father's Phone:</p>
+                            <p class="w-1/2">{{ students_dad.mobile }}</p>  
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Present Address:</p>
+                            <p class="w-1/2">{{ students_mum.present_address }}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Permanent Address:</p>
+                            <p class="w-1/2">{{ students_mum.permanent_address }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="shadow shadow-gray-100 text-gray-500 p-3 mb-3">
+                    <h2 class="text-gray-400 w-fit text-xl font-medium my-4
+                        border-0 border-b border-b-gray-300"> Academics</h2>
+                    <div class="info-details flex flex-col">
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Current Class:</p>
+                            <p class="w-1/2">{{student.student_class.name}} {{student.student_class.get_stream_display}}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Class Teacher:</p>
+                            <p class="w-1/2">
+                                {{student.student_class.class_teacher.get_title_display}}. {{student.student_class.class_teacher.user.first_name}} {{student.student_class.class_teacher.user.last_name}}</p>
+                        </div>
+                        <div class="text-base flex">
+                            <p class="w-1/2 font-medium">Subjects:</p>
+                            <ul class=" lisdisc">
+                                {% for sc in students_subjects %}
+                                    <li>{{ sc.name}}</li>
+                                {% endfor %}
+                            </ul>
+                           
+                        </div>
+                        
+
+                        
+                    </div>
+                </div>
+                <div class="shadow shadow-gray-100 text-gray-500 p-3 mb-3">
+                    <h2 class="text-gray-400 w-fit text-xl font-medium my-4
+                        border-0 border-b border-b-gray-300"> Exam Performance</h2>
+                    <div class="info-details flex flex-col gap-5">
+
+                        <div class="btns flex gap-8 my-2">
+                            <button id="cat1-btn" class="w-30 h-9 p-2 text-gray-400 text-sm border border-gray-200 rounded  shadow shadow-gray-200">CAT 1</button>
+                            <button id="cat2-btn" class="w-30 h-9  p-2 text-gray-400 text-sm border border-gray-200 rounded shadow shadow-gray-200">CAT 2</button>
+                            <button id="endterm-btn" class="w-30 h-9 p-2 text-gray-400 text-sm border border-gray-200 rounded  shadow shadow-gray-200">END TERM</button>
+                        </div>
+
+                       
+                        <div class="cat-1" id="cat1-results">
+                            <p class="font-medium text-lg text-blue-400">CAT 1 </p>
+                            {% for rs in cat1_results %}
+                                <div class="flex text-base">
+                                    <p class="w-1/2 font-medium">{{rs.exam.subject.name}} </p>
+                                    <p class="w-1/2">{{rs.score}}</p>
+                                </div>
+                            
+                            {% endfor %}
+                        </div>  
+                        
+                        <div class="cat-2 hidden" id="cat2-results">
+                            <p class="font-medium text-lg text-blue-400">CAT 2 </p>
+                            {% for rs in cat2_results %}
+                                <div class="flex text-base">
+                                    <p class="w-1/2 font-medium">{{rs.exam.subject.name}} </p>
+                                    <p class="w-1/2">{{rs.score}}</p>
+                                </div>
+                            
+                            {% endfor %}
+                        </div>  
+
+                        <div class="end-term hidden" id="endterm-results">
+                            <p class="font-medium text-lg text-blue-400">END TERM </p>
+                            {% for rs in endterm_results %}
+                                <div class="flex text-base">
+                                    <p class="w-1/2 font-medium">{{rs.exam.subject.name}} </p>
+                                    <p class="w-1/2">{{rs.score}}</p>
+                                </div>
+                            
+                            {% endfor %}
+                        </div>  
+                    </div>
+                </div>
+               
+            </div>
+            <div class="p-4 col-span-full sm:col-span-4 lg:col-span-2 h-full low-300 ">
+                <div class="student-stats flex justify-between gap-2 border-gray-100 
+                    px-4 py-8 h-14 shadow shadow-gray-200">
+                    <div class="absentism flex flex-col gap-0.5 justify-center">
+                        <h5 class="font-semibold">Attendance</h5>
+                        <p class="text-green-600 text-xl font-bold text-center">{{ present_days }}</p>
+                    </div>
+                    <div class="attendace flex flex-col gap-0.5 justify-center">
+                        <h5 class="font-semibold">Absent</h5>
+                        <p class="text-xl font-bold text-center text-red-500">{{ absent_days }}</p>
+                    </div>
+
+                    <div class="attendace flex flex-col gap-0.5 justify-center">
+                        <h5 class="font-semibold">Late</h5>
+                        <p class="text-xl font-bold text-center text-orange-400">{{ late_days }}</p>
+                    </div>
+                    
+                </div>
+                <div class="student-stats flex flex-col gap-2 border-gray-100  mt-7
+                    px-4 py-8 4 shadow shadow-gray-200">
+                    <div class="cat1 flex gap-0.5  justify-between">
+                        <h5 class="font-semibold">CAT 1</h5>
+                        <p class="text-green-600 ">{{ total_score_cat1 }}</p>
+                    </div>
+                    <div class="cat2 flex gap-0.5 justify-between">
+                        <h5 class="font-semibold">CAT 2</h5>
+                        <p class=" text-red-500">{{ total_score_cat2 }}</p>
+                    </div>
+
+                    <div class="endterm flex gap-0.5 justify-between">
+                        <h5 class="font-semibold">END TERM</h5>
+                        <p class="  text-orange-400">{{ total_score_endterm }}</p>
+                    </div>
+                    
+                </div>
+
+                <div class="announcements mt-7 ">
+                    <h3 class="font-semibold text-blue-400 text-lg"> Announcements</h3>
+                    <ul>
+                        {% if latest_announcements %}
+                            {% for announcement in latest_announcements %}
+                                <li class="listt text-gray-500 list-none text-sm min-h-10 py-1 border-0 border-b border-b-gray-200">{{announcement.title}}
+                                    <span class="text-gray-400 text-sm">{{ announcement.created_at|naturaltime }}</span></li>
+                            
+                            {% endfor %}
+                            {% else %}
+                            <p>No recent activities</p>
+                        {% endif %}
+                    </ul>
+                    
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

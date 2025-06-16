@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="mark-attendance-section p-6">
+    <div class="flex justify-between gap-3">
+        <h2 class="font-semibold text-gray-400 py-3 text-lg">Mark Attendance For today {{date}}</h2>
+        <p class="text-blue-300 font-semibold text-base">{{classroom.name}} {{ classroom.get_stream_display}}</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+
+        <table class="w-full text-left border border-gray-200 rounded-xl hidden md:table">
+            <thead class="bg-gray-50 ">
+                <tr>
+                    <th class="py-3 px-4 border-b border-b-gray-200">ID</th>
+                    <th class="py-3 px-4 border-b border-b-gray-200">Student</th>
+                    <th class="py-3 px-4 border-b border-b-gray-200">Admission Number</th>
+                    <th class="py-3 px-4 border-b border-b-gray-200">Status</th>
+                </tr>
+            </thead>
+            
+            <tbody class="divide-y divide-gray-300">
+                {% for student in page_obj %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4">{{student.user.id}}</td>
+                        <td class="py-3 px-4">{{student.user.first_name}} {{student.user.last_name}}</td>
+                        <td class="py-3 px-4">{{student.admission_number}}</td>
+                        <td class="py-3 px-4">
+                            <select name="status_{{ student.user.id }}">
+                                <option value="Present">Present</option>
+                                <option value="Absent">Absent</option>
+                                <option value="Late">Late</option>
+                            </select>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="flex w-[200px] mx-auto mt-4 justify-center rounded-md  bg-blue-400 px-3 py-1.5 text-sm/6 
+                            font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 focus-visible:outline-blue-600"">Submit</button>
+    </form>
+
+    <div class="pagination w-full mt-8 mb-6 flex justify-center border-gray-50 shadow shadow-gray-200 
+        h-20 py-4">
+        <span class="step-links flex gap-8 items-center">
+            {% if page_obj.has_previous %}
+                <div class="first flex gap-2 items-center">
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page=1">FIRST</a>
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page={{page_obj.previous_page_number}}">PREV</a>
+                </div>
+                
+            {% endif %}
+            <span class="current w-8 h-8 rounded-full text-white bg-gray-500 k  text-center flex 
+                text-sm  justify-center items-center">
+                {{ page_obj.number }}
+            </span>
+            {% if page_obj.has_next %}
+                <div class="first flex gap-2 items-center">
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page={{page_obj.next_page_number}}">NEXT</a>
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page={{page_obj.paginator.num_pages}}">LAST</a>
+                </div>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}
+

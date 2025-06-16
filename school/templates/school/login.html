@@ -1,0 +1,56 @@
+{% extends 'form.html' %}
+{% block title %}EduSphere|login{% endblock %}
+
+{% block content %}
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border border-gray-100 p-6 rounded-md
+            shadow shadow-gray-100">
+    <h3 class="text-gray-400 text-xl font-bold my-4">Login</h3>
+            
+            <form class="space-y-6  shadow-gray-400" action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                
+                {% comment %} email {% endcomment %}
+                <div class="username">
+                    <label for="username" class="block text-sm/6 font-medium text-gray-900">Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                        />
+                </div>
+            
+                {% comment %} password {% endcomment %}
+                <div class="password">
+                    <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1
+                            outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+                <a href="{% url 'password-reset' %}" class="block text-right font-semibold text-sm hover:text-gray-500 text-blue-400">Forgot Password?</a>
+
+                <div>
+                    <button
+                        type="submit"
+                        class="flex w-full justify-center rounded-md  bg-blue-400 px-3 py-1.5 text-sm/6 
+                            font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        Login
+                    </button>
+                    <a href="{% url 'signup' %}" class="block mt-4 text-sm text-center text-gray-500 hover:text-blue-400">Don't have an account?</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "form.html" %}
+{% load static %}
+
+{% block title %}EduSphere | Home{% endblock %}
+{% block content%}
+    <div class="home-page">
+        <div class="w-full navbar flex justify-between border-0 border-b-gray-100 shadow shadow-gray-100 
+            items-center p-6">
+            <div class="logo">
+                <h2 class="font-bold text-blue-400">EduSphere🌐</h2>
+            </div>
+            <div class="links flex gap-7">
+                <a href="{% url 'signup' %}" class="text-gray-600 font-semibold hover:text-blue-400 transition-colors duration-100">Sign Up</a>
+                <a href="{% url 'login' %}" class="text-gray-600 font-semibold hover:text-blue-400 transition-colors duration-100">Login</a>
+                <a href="{% url 'signup' %}" class="text-gray-600 font-semibold hover:text-blue-400 transition-colors duration-100">Contact Us</a>
+            </div>
+        </div>
+        <div class="hero-section w-full flex mt-6">
+            <div class="left-section w-1/2 flex flex-col gap-2 justify-center px-6 py-8 itemsenter pl-16">
+                <h1 class="text-6xl leading-18 font-bold text-gray-600">Simplify School Management</h1>
+                <p class="text-gray-400 text-sm sm:text-base my-4">
+                    Streamline your administrative tasks with our <br>intuitive platform
+                </p>
+                <a href="{% url 'signup' %}" class="py-3 font-bold text-center border border-b-blue w-32 h-12 text-sm tracking-wide
+                 text-white bg-gray-500 rounded ">Get Started</a>
+                
+            </div>
+            <div class="righ-section w-1/2">
+                <img src="{% static 'images/transparentHeroBg.png' %}" alt="students">
+            </div>
+        </div>
+    </div>
+{% endblock %}

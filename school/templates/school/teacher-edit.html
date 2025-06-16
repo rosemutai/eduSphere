@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_teacher %}
+    <div class="flex min-h-full flex-col justify-center px-6 pb-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full border border-gray-100 p-6 rounded-md
+            shadow shadow-gray-100 md:w-2/3">
+            
+        <form class="space-y-6 shadow-gray-400 w-full" 
+            method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% comment %} Names {% endcomment %}
+            <div class="names flex md:flex-row flex-col gap-2 w-full">
+                {% comment %} Firstname  {% endcomment %}
+                <div class="firstname md:w-1/2">
+                    <label for="firstname" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">First Name</label>
+                    <input
+                        type="text"
+                        name="firstname"
+                        id="firstname"
+                        value={{teacher.user.first_name}}
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+    
+                {% comment %} Last name  {% endcomment %}
+                <div class="lastname md:w-1/2">
+                    <label for="lastname" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Last Name</label>
+                    <input
+                        type="text"
+                        name="lastname"
+                        id="lastname"
+                        value={{teacher.user.last_name}}
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                        />
+                </div>
+            </div>
+    
+            {% comment %} username & email{% endcomment %}
+            <div class="username flex md:flex-row flex-col gap-2 w-full">
+                {% comment %} username  {% endcomment %}
+                <div class="username md:w-1/2">
+                    <label for="username" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Userame</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        value={{teacher.user.username}}
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+                {% comment %} Email  {% endcomment %}
+                <div class="email md:w-1/2">
+                    <label for="email" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                                id="email"
+                                value={{teacher.user.email}}
+                                required
+                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                                    -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                    focus:outline-blue-600 sm:text-sm/6"
+                                />
+                        </div>
+                    </div>
+    
+                    {% comment %} teacher image password {% endcomment %}
+                    <div class="teacherimage flex md:flex-row flex-col gap-2 w-full">
+                        <div class="md:w-1/2">
+                            <label for="teacherimage" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Teacher's image</label>
+                            <input
+                                type="file"
+                                name="teacher-image"
+                                id="teacherimage"
+                                value={{teacher.teacher_image}}
+                                required
+                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                                    -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                    focus:outline-blue-600 sm:text-sm/6"
+                            />
+                        </div>
+    
+                        <div class="md:w-1/2">
+                            <label for="password" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                value={{teacher.user.password}}
+                                required
+                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                                    -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                    focus:outline-blue-600 sm:text-sm/6"
+                            />
+                        </div>
+                        
+                    </div>
+
+                    {% comment %} Gender & Date of birth {% endcomment %}
+                    <div class="gender-dob flex md:flex-row flex-col gap-2 w-full">
+                        {% comment %} Gender  {% endcomment %}
+                        <div class="gender md:w-1/2">
+                            <label for="gender" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Gender</label>
+                            <select
+                                type="text"
+                                name="gender"
+                                id="gender"
+                                required
+                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-500 outline-1
+                                    -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                    focus:outline-blue-600 sm:text-sm/6"
+                            >
+                                <option value="">Select gender</option>
+                                <option value="Female" {% if teacher.gender == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Male" {% if teacher.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Others" {% if teacher.gender == 'Others' %}selected{% endif %}>Others</option>
+                            </select> 
+                        </div>
+
+                        <div class="titles md:w-1/2">
+                            <label for="titles" class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Title</label>
+                            <select
+                                type="text"
+                                name="usertitle"
+                                id="title"
+                                required
+                                class="block w-full rounded-md bg-white px-3 py-1.5 text-sm md:text-base text-gray-500 outline-1
+                                    -outline-offset-1 outline-gray-200 placeholder:text-gray-200 focus:-outline-offset-2 
+                                    focus:outline-blue-600"
+                            >
+                                <option value="">-- Select --</option>
+                                <option value="Miss" {% if teacher.title == 'Miss' %}selected{% endif %}>Miss</option>
+                                <option value="Mr" {% if teacher.title == 'Mr' %}selected{% endif %}>Mr</option>
+                                <option value="Mrs" {% if teacher.title == 'Mrs' %}selected{% endif %}>Mrs</option>
+                            </select> 
+                        </div>
+                    </div>
+                 
+                    
+                    <div class="subjects md:w-1/2">
+                        <label class="block text-sm md:text-base font-semibold md:font-normal text-gray-500 mb-1">Edit your subjects</label>
+                        <ul>
+                            {% for subject in all_subjects %}
+                            {% if not subject.teacher or subject.teacher.user.id == teacher.user.id %}
+                                <li class="text-sm md:text base">
+                                    <input type="checkbox" name="subjects" value="{{subject.id}}"
+                                        {% if subject.id in assigned_ids %}checked{% endif %}>
+                                    {{subject.name}} ({{subject.class_assigned.name}} {{subject.class_assigned.stream}})
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
+                
+    
+                    <div>
+                        <button
+                            type="submit"
+                            class="flex justify-center rounded-md w-56  bg-blue-400 px-3 py-2 text-sm/6 
+                                font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                        >
+                            Save
+                        </button>
+                    </div>
+                     
+                </form>
+                </div>
+            
+            
+
+        </div>
+    </div>
+
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,125 @@
+{% extends 'form.html' %} 
+
+{% block title %}EduSphere | SIgnup{% endblock %}
+{% block content %}
+{% comment %} username, email firs'_name last_name {% endcomment %}
+
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md border border-gray-100 p-6 rounded-md
+        shadow shadow-gray-100 ">
+    {% comment %} <h2 class="text-blue-400 text-2xl my-2">Signup</h2> {% endcomment %}
+
+    <h3 class="text-gray-400 text-xl font-bold my-4">Create an Account</h3>
+        
+        <form class="space-y-6 shadow-gray-400" action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+             {% comment %} first name {% endcomment %}
+             
+                <div class="firstname ">
+                    <label for="firstname" class="block text-sm/6 font-medium text-gray-900">First Name</label>
+                    <input
+                        type="text"
+                        name="firstname"
+                        id="firstname"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+
+                {% comment %} last name  {% endcomment %}
+                <div class="lastname ">
+                    <label for="lastname" class="block text-sm/6 font-medium text-gray-900">Last Name</label>
+                    <input
+                        type="text"
+                        name="lastname"
+                        id="lastname"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+
+                
+
+            {% comment %} username {% endcomment %}
+           
+                <div class="username">
+                    <label for="username" class="block text-sm/6 font-medium text-gray-900">Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-400  focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                    />
+                </div>
+    
+                {% comment %} email {% endcomment %}
+                <div class="email ">
+                    <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        required
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1
+                            -outline-offset-1 outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2 
+                            focus:outline-blue-600 sm:text-sm/6"
+                        />
+                </div>
+            
+
+            {% comment %} role  {% endcomment %}
+            {% comment %} <div class="role">
+                <label for="role" class="block text-sm/6 font-medium text-gray-900">Role</label>
+                <select
+                    name="role"
+                    id="role"
+                    required
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1
+                        -outline-offset-1 outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2 
+                        focus:outline-blue-600 sm:text-sm/6"
+                >
+                    <option value="">Select your Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Parent">Parent</option>
+                </select>
+            </div> {% endcomment %}
+
+            {% comment %} password {% endcomment %}
+            <div class="password">
+                <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    required
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1
+                        outline-gray-200 placeholder:text-gray-400 focus:-outline-offset-2
+                        focus:outline-blue-600 sm:text-sm/6"
+                />
+            </div>
+
+            <div>
+                <button
+                    type="submit"
+                    class="flex w-full justify-center rounded-md  bg-blue-400 px-3 py-1.5 text-sm/6 
+                        font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                >
+                    Sign Up
+                </button>
+                <a href="{% url 'login' %}" class="block mt-4 text-sm text-center text-gray-500 hover:text-blue-400">Already have an account?</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

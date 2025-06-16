@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="exams-section p-6">
+    <div class="flex justify-between items-center h-20 py-1">
+        <h3 class="text-gray-400 text-xl font-bold my-4">Exams</h3>
+        <div class="hidden lg:flex gap-2">
+            
+            <button class="h-7 w-7 rounded-full text-base bg-blue-400 text-white
+                border border-blue-400 text-center font-normal">
+                <i class="fa fa-arrow-down edit-icon"></i>
+            </button>
+            <a href="{% url 'add-exam' %}" class="h-7 w-7 rounded-full text-base text-blue-400 bg-white
+                border border-blue-400 text-center font-normal  edit-blue-icon">
+                <i class="fa fa-plus edit-blue-icon"></i>
+            </a>
+        </div>
+
+        <div class="flex lg:hidden gap-1 relative">
+            <button class="h-7 w-7 rounded-full text-base text-white
+                border-0 text-center font-normal cursor-pointer" id="ellipsis-btn">
+                <i class="fa-solid fa-ellipsis-vertical gray-icon"></i>
+            </button>
+            
+            
+
+            <ul id="ellipsis-menu" class="absolute z-50 right-6 hidden rounded shadow
+                px-1 py-3 -mt-6 w-26 shadow-gray-300 fle-col gap-1 transition-all duration-200">
+                {% if request.user.is_admin %}
+                <li class="text-sm text-gray-400 border-0 border-b border-b-gray-200 pb-0.5 mb-1">
+                    <a href="">Add Exam</a>
+                </li>
+                {% endif %}
+                <li class="text-sm text-gray-400 border-0 border-b border-b-gray-200 pb-0.5 mb-1">
+                    <button href="">Download</button>
+                </li>
+                <li class="text-sm text-gray-400 border-0 border-b border-b-gray-200 pb-0.5 mb-1">
+                    <button class="w-7 rounded-full text-gray-400 text-sm
+                        border-0 text-center font-normal cursor-pointer" id="search-btn">
+                        Search
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="search-input w-full hidden lg:hidden mb-3" id="search-input">
+        <input 
+            type="text" 
+            name="search" 
+            id="search" 
+            placeholder="Search here"
+            class="placeholder-gray-300 w-full rounded-md bg-white text-gray-700 border 
+            border-gray-200 h-10 p-2 focus:border-gray-400 focus:outline-0"
+        >
+    </div>
+    <table class="w-full text-left border border-gray-200 rounded-xl mt-8">
+        <thead class="bg-gray-50 ">
+            <tr>
+                <th class="py-2 px-3 text-sm md:text-base border-b border-b-gray-200">NO.</th>
+                <th class="py-2 px-3 text-sm md:text-base border-b border-b-gray-200">NAME</th>
+                <th class="py-2 px-3 text-sm md:text-base border-b border-b-gray-200">DATE</th>
+                <th class="py-2 px-3 text-sm md:text-base border-b border-b-gray-200 hidden md:table-cell">SUBJECT</th>
+                <th class="py-2 px-3 text-sm md:text-base border-b border-b-gray-200">ACTION</th>
+
+                
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-300">
+            {% for exam  in page_obj %}
+                <tr class="hover:bg-gray-50">
+                    <td class="py-2 px-3">{{ forloop.counter }}</a></td>
+                    <td class="py-2 px-3 text-sm md:text-base">{{ exam.get_name_display }}</td>
+                    <td class="py-2 px-3 text-sm md:text-base">{{ exam.exam_date|date:'d-m-Y' }}</td>
+                    <td class="py-2 px-3 text-sm md:text-base hidden md:table-cell">{{ exam.subject.name }}</td>
+                    <td class="py-2 px-3 text-sm md:text-base hidden md:flex gap-2">
+                        {% if request.user.is_admin %}
+                            <a href="" class="text-sm text-blue-400 hover:transform hover:scale-105 hover:transition hover:duration-150">
+                                <i class="fas fa-pencil-alt edit-blue-icon"></i>
+                            </a>
+                            <a href="" class="text-sm hover:transform hover:scale-105 hover:transition hover:duration-150">
+                                <i class="fas fa-trash delete-icon"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                    
+                </tr>
+                
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination w-full my-6 flex justify-center border-gray-50 shadow shadow-gray-200 
+        h-20 py-4">
+        <span class="step-links flex gap-8 items-center">
+            {% if page_obj.has_previous %}
+                <div class="first flex gap-2 items-center">
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page=1">FIRST</a>
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page={{page_obj.previous_page_number}}">PREV</a>
+                </div>
+                
+            {% endif %}
+            <span class="current w-8 h-8 rounded-full text-white bg-gray-500 k  text-center flex 
+                text-sm  justify-center items-center">
+                {{ page_obj.number }}
+            </span>
+            {% if page_obj.has_next %}
+                <div class="first flex gap-2 items-center">
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page={{page_obj.next_page_number}}">NEXT</a>
+                    <a class="text-sm text-gray-500 hover:text-blue-400" href="?page={{page_obj.paginator.num_pages}}">LAST</a>
+                </div>
+            {% endif %}
+        </span>
+    </div>
+
+</div>
+    
+{% endblock %}

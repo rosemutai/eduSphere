@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+{% if user.role == 'Admin' %}
+
+<div class="admin-section p-3 lg:p-6">
+    {% comment %} <div class="flex justify-end gap-3 sm:hidden pb-4 pr-8 transition-opacity duration-150 ease-in relative">
+        <p class="text-sm text-gray-400">Notifications</p>
+        <button id="recents-btn" class="text-gray-400 cursor-pointer" id="recents-btn">
+            <i class="fa fa-bell gray-icon"></i>
+        </button>
+        <i class="fa fa-circle orange-icon absolute -top-2 right-8"></i>
+            
+        
+    </div> {% endcomment %}
+    <div class="grid grid-cols-12 lg:grid-cols-7 h-full gap-1">
+        <div class="main-content p-3 h-screen text-white col-span-full sm:col-span-7 lg:col-span-5 border-gray-500">
+            <div class="statistics flex md:justify-between flex-wrap gap-y-3 lg:gap-y-0 gap-1">
+                <div class="students-card flex flex-col gap-0.5 w-40 md:w-48 lg:w-30 h-30 rounded-md justify-center
+                 items-center py-2 bg-orange-500/15">
+                    <div class="icon bg-orange-500 w-8 flex justify-center rounded items-center h-8">
+                        <i class="fa-solid fa-graduation-cap edit-icon"></i>
+                    </div>
+                    <p class="font-semibold text-sm text-gray-600">Students</p>
+                    <h5 class="font-bold text-lg text-gray-600">{{ students_count }}</h5>
+                </div>
+
+                <div class="students-card flex flex-col gap-0.5 w-40 md:w-48 lg:w-30 h-30 rounded-md justify-center items-center py-2
+                    bg-blue-500/15">
+                    <div class="icon bg-blue-500 w-8 flex justify-center rounded items-center h-8">
+                        <i class="fa-solid fa-graduation-cap edit-icon"></i>
+                    </div>
+                    <p class="font-semibold text-sm text-gray-600">Teachers</p>
+                    <h5 class="font-bold text-lg text-gray-600">{{ teachers_count }}</h5>
+                </div>
+
+                <div class="students-card flex flex-col gap-0.5 w-40 md:w-48 lg:w-30 h-30 rounded-md justify-center items-center py-2
+                    bg-pink-500/15">
+                    <div class="icon bg-pink-500 w-8 flex justify-center rounded items-center h-8">
+                        <i class="fa-solid fa-graduation-cap edit-icon"></i>
+                    </div>
+                    <p class="font-semibold text-sm text-gray-600">Classes</p>
+                    <h5 class="font-bold text-lg text-gray-600">{{ school_classes_count }}</h5>
+                </div>
+
+                <div class="students-card flex flex-col gap-0.5 w-40 md:w-48 lg:w-30 h-30 rounded-md justify-center items-center py-2
+                    bg-purple-500/15">
+                    <div class="icon bg-purple-500 w-8 flex justify-center rounded items-center h-8">
+                        <i class="fa-solid fa-graduation-cap edit-icon"></i>
+                    </div>
+                    <p class="font-semibold text-sm text-gray-600">Subjects</p>
+                    <h5 class="font-bold text-lg text-gray-600">{{ subjects_count }}</h5>
+                </div>
+
+                <div class="students-card flex flex-col gap-0.5 w-40 sm:w-48 lg:w-30 h-30 rounded-md justify-center items-center py-2
+                    bg-green-600/15">
+                    <div class="icon bg-green-600 w-8 flex justify-center rounded items-center h-8">
+                        <i class="fa-solid fa-graduation-cap edit-icon"></i>
+                    </div>
+                    <p class="font-semibold text-sm text-gray-600">Departments</p>
+                    <h5 class="font-bold text-lg text-gray-600">{{ departments_count }}</h5>
+                </div>
+            </div>
+
+            <div class="form-filters text-gray-500 bged-500 py-5 flex flex-col sm:flex-row bg-d-500 justify-between items-center my-4
+                gap-6">
+                <div class="filter-graphs w-full md:w-1/2 bg-blu500 flex flex-col gap-1">
+                    <label for="classroom" class="text-sm">View graph </label>
+                    <select id="choose-graph" name="filter-graphs" class="w-full border-gray-300 border p-2 rounded-md
+                        transition-all duration-150 focus:border-shadow hover:shadow hover:shadow-gray-300
+                        text-gray-400 outline-0">
+                        <option value=" ">-- Select  --</option>
+                        <option value="attendance-per-class">Attendance per Class</option>
+                        <option value="teachers-per-department">Teachers per Department</option>  
+                        <option value="number-of-students-per-class">Number of students per class</option>
+                    </select>
+                </div>
+                <form method="get" class="w-full md:w-1/2 bg-re500 flex flex-col gap-1">
+                    <label for="classroom" class="text-sm">View class attendance </label>
+                    <select name="classroom" id="classroom" class="w-full border-gray-300 border p-2 rounded-md
+                        transition-all duration-150 focus:border-shadow hover:shadow hover:shadow-gray-300
+                        text-gray-400 outline-0" onchange="this.form.submit()">
+                        <option value="">-- Select Class --</option>
+                        {% for classroom in school_classes %}
+                            <option value="{{ classroom.id }}" {% if classroom.id == selected_clas_id %}selected{% endif %}>
+                                {{ classroom.name}} {{ classroom.get_stream_display }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <div class="pie-chart">
+                {% if class_selected %}
+                    <div class="piechart w-1/2 mx-auto">
+                        <h2 class="text-gray-400 font-semibold text-center">Title: {{ selected_class_name }}</h2>
+                        <canvas id="attendance-pie-chart" class="w-54"></canvas>
+                        <script>
+                            const ctx5 = document.getElementById('attendance-pie-chart').getContext('2d')
+                            new Chart(ctx5, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Present', 'Absent', 'Late'],
+                                    datasets: [{
+                                        data: [
+                                            {{ attendance_per_classroom.present_count }},
+                                            {{ attendance_per_classroom.absent_count }},
+                                            {{ attendance_per_classroom.late_count }}
+                                        ],
+                                        backgroundColor: [
+                                            '#81C784',
+                                            '#E57373',
+                                            '#FFB74D'
+                                        ]  
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            })
+                            
+                        </script>
+                    </div>
+               
+                {% endif %}
+            </div>
+            
+
+            <div class="charts-section flex flex-col  gap-5 mt-6">
+                <div id="barchart-attendance-per-class" class="students-per-class">
+                    <h2 class="text-gray-400 font-semibold text-center">All classes attendance per class</h2>
+                    <div class="barchart">
+                        <canvas id="attendance-chart" ></canvas>
+                        <script>
+                            const chartData = {{ attendance_data_chart|safe }}
+                            const classLabels = chartData.map((item) => item.class)
+                            const presentCounts = chartData.map((item) => item.present)
+                            const absentCounts = chartData.map((item) => item.absent)
+                            const lateCounts = chartData.map((item) => item.late)
+    
+                            const ctx4 = document.getElementById('attendance-chart').getContext('2d')
+                            new Chart(ctx4, {
+                                type: 'bar',
+                                data: {
+                                    labels: classLabels,
+                                    datasets: [
+                                        {
+                                            label: 'Present',
+                                            data: presentCounts,
+                                            backgroundColor: '#81C784'
+                                        },
+    
+                                        {
+                                            label: 'Absent',
+                                            data: absentCounts,
+                                            backgroundColor: '#E57373'
+                                        },
+                                        
+                                        {
+                                            label: 'Late',
+                                            data: lateCounts,
+                                            backgroundColor: '#FFB74D'
+                                        }
+                                       
+                                    ]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            })
+                            
+                        </script>
+                    </div>
+                </div>
+                <div id="barchart-teachersNo-per-department" class="hidden teachers-per-department">
+                    <h2 class="text-gray-400 font-semibold text-center">Teachers per Department</h2>
+                    <canvas id="department-chart" ></canvas>
+                    <script>
+                        const ctx = document.getElementById('department-chart').getContext('2d')
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: {{ labels|safe }},
+                                datasets: [{
+                                    label: '# of Teachers',
+                                    data: {{ teachers_count_per_department|safe }}
+                                   
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        })
+                        
+                    </script>
+                </div>
+
+                <div id="barchart-studentsNo-per-class" class="hidden bg-gr500">
+                    <h2 class="text-gray-400 font-semibold text-center">No. of Students per Class</h2>
+                    <canvas id="students-chart" ></canvas>
+                    <script>
+                        const ctx2 = document.getElementById('students-chart').getContext('2d')
+                        new Chart(ctx2, {
+                            type: 'bar',
+                           data: {
+                                labels: {{ mylabels|safe }},
+                                datasets: [{
+                                    label: '# of Students',
+                                    data: {{ students_count_per_class|safe }}
+                                   
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        })
+                        
+                    </script>
+                </div>
+                
+            </div>
+        </div>
+        <div class=" p-4 col-span-full bglue-100 hidden sm:block 
+            sm:col-span-5 lg:col-span-2 h-full shadow shadow-gray-200 rounded gap-5">
+                <div class="announcements mb-7 ">
+                    <h3 class="font-semibold text-blue-400 text-lg"> Announcements</h3>
+                    <ul>
+                        {% if latest_announcements %}
+                            {% for announcement in latest_announcements %}
+                                <li class="listt text-gray-500 list-none text-sm min-h-10 py-1 border-0 border-b border-b-gray-200">{{announcement.title}}
+                                    <span class="text-gray-400 text-sm">{{ announcement.created_at|naturaltime }}</span></li>
+                            
+                            {% endfor %}
+                            {% else %}
+                            <p>No recent activities</p>
+                        {% endif %}
+                    </ul>
+                    
+                </div>
+
+                <div class="recents">
+                    <h3 class="font-semibold text-blue-400 text-lg">Recent activity</h3>
+                    <ul>
+                        {% if recent_activities %}
+                            {% for activity in recent_activities %}
+                                <li class="listt text-gray-500 list-none text-sm min-h-10 py-1 border-0 border-b border-b-gray-200">{{activity.type}}
+                                    <span class="text-gray-400 text-sm">{{ activity.timestamp|naturaltime }}</span></li>
+                            
+                            {% endfor %}
+                            {% else %}
+                            <p>No recent activities</p>
+                        {% endif %}
+                    </ul>
+                    
+                </div>
+                
+            
+            
+        </div>
+
+    </div>
+    
+
+</div>
+ 
+
+{% endif %}
+{% endblock %}
