@@ -1,0 +1,168 @@
+{% load static %}
+
+<!doctype html>
+<html class="h-full bg-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css"> 
+    {% comment %} <script src="https://use.fontawesome.com/102b523f5.js"></script> {% endcomment %}
+    <script src="{% static 'js/chart.umd.js' %}"></script>
+
+</head>
+<body class="text-gray-900 h-full">
+    
+   <div class="flex lg:hidden my-6 px-6 justify-between">
+        <img src="{% static 'images/logo.png' %}" class="w-20 h-20">
+
+        <button class="cursor-pointer" id="menu-btn"><i class="fa fa-bars darkgray-icon"></i></button>
+
+   </div>
+  <div class=" min-h-full w-full lg:grid  lg:grid-cols-7">
+    <div class="side-bar min-h-screen columns-12 hidden lg:columns-1 border-r h-full border-r-gray-100 shadow shadow-gray-100 p-6
+        lg:flex flex-col gap-6" id='sidebar-nav'>
+        <img src="{% static 'images/logo.png' %}" class="w-24 h-20">
+
+        <div class="sidebar-links flex flex-col gap-2.5 text-gray-600">
+            <h4 class="text-gray-400">Main Menu</h4>
+            {% if user.is_authenticated and user.is_admin %}
+                <details class="students">
+                    <summary class="cursor-pointer flex justify-between hover:bg-gray-100 rounded-sm group hover:text-blue-400 
+                        py-2 pr-2 pl-0.5 transition-all duration-100 active:bg-gray-100 active:text-blue-400">
+                        Student
+                        <i class="fas fa-chevron-down darkgray-icon group-hover:text-blue-400"></i>
+                    </summary>
+                    <div class="pl-4 pb-4 flex flex-col gap-2 mt-2">
+                        <a href="{% url 'student-list' %}" class="text-gray-500 text-sm">All Students</a>
+                        <a href="{% url 'add-student'%}" class="text-gray-500 text-sm">Student Add</a>
+                    </div>
+                </details>
+                {% endif %}
+            <details class="teachers">
+                <summary class="cursor-pointer flex justify-between hover:bg-gray-100 rounded-sm
+                    hover:text-blue-400 py-2 pr-2 pl-0.5 transition-all duration-100 active:bg-gray-100 active:text-blue-400">
+                    Teachers
+                    <i class="fas fa-chevron-down darkgray-icon group-hover:text-blue-400"></i>
+                </summary>
+                <div class="pl-2 pb-4 flex flex-col gap-2 mt-2">
+                    <a href="{% url 'teachers-list' %}" class="text-gray-500 text-sm">All Teachers</a>
+                    {%if not user.is_student %}
+                        <a href="{% url 'add-teacher' %}" class="text-gray-500 text-sm">Create Teacher Acc</a>
+                    {% endif %}
+                </div>
+            </details>
+
+            
+            <details class="department">
+                <summary class="cursor-pointer flex justify-between hover:bg-gray-100 rounded-sm
+                    hover:text-blue-400 py-2 pl-0.5 pr-2 transition-all duration-100 active:bg-gray-100 active:text-blue-400">
+                    Department
+                    <i class="fas fa-chevron-down darkgray-icon group-hover:text-blue-400"></i>
+                </summary>
+                <div class="pl-4 pb-4 flex flex-col gap-2 mt-2">
+                    <a href="{% url 'departments' %}" class="text-gray-500 text-sm">Departments</a>
+                    {% if user.is_authenticated and user.is_admin %}
+                        <a href="{% url 'create-department' %}" class="text-gray-500 text-sm">Add Department </a>
+                    {% endif %}
+                </div>
+            </details>
+            
+            
+            <details class="subject">
+                <summary class="cursor-pointer flex justify-between hover:bg-gray-100 rounded-sm
+                    hover:text-blue-400 py-2 pr-2 pl-0.5.5 transition-all duration-100 active:bg-gray-100 active:text-blue-400">
+                    Subject
+                    <i class="fas fa-chevron-down darkgray-icon group-hover:text-blue-400"></i>
+                </summary>
+                <div class="pl-4 pb-4 flex flex-col gap-2 mt-2">
+                    <a href="{% url 'subjects' %}" class="text-gray-500 text-sm">Subjects</a>
+
+                    {% if user.is_authenticated and user.is_admin %}
+                        <a href="{% url 'add-subject' %}" class="text-gray-500 text-sm">Add Subject</a>
+                    {% endif %}
+                </div>
+            </details>
+            <details class="Exams">
+                <summary class="cursor-pointer flex justify-between hover:bg-gray-100 rounded-sm
+                    hover:text-blue-400 py-2 pr-2 pl-0.5 transition-all duration-100 active:bg-gray-100 active:text-blue-400">
+                    Exam
+                    <i class="fas fa-chevron-down darkgray-icon group-hover:text-blue-400"></i>
+                </summary>
+                <div class="pl-4 pb-4 flex flex-col gap-2 mt-2">
+                    <a href="{% url 'exams' %}" class="text-gray-500 text-sm">Exam List</a>
+                    {% if user.is_authenticated and user.is_admin %}
+                        <a href="{% url 'add-exam' %}" class="text-gray-500 text-sm">Exam Add</a>
+                        
+                    {% endif %}
+                </div>
+            </details>
+            <details class="Exams">
+                <summary class="cursor-pointer flex justify-between hover:bg-gray-100 rounded-sm
+                    hover:text-blue-400 py-2 pr-2 pl-0.5 transition-all duration-100 active:bg-gray-100 active:text-blue-400">
+                    Notices
+                    <i class="fas fa-chevron-down darkgray-icon group-hover:text-blue-400"></i>
+                </summary>
+                <div class="pl-4 pb-4 flex flex-col gap-2 mt-2">
+                    <a href="{% url 'announcements' %}" class="text-gray-500 text-sm">All Notices</a>
+                    {% if user.is_authenticated and user.is_admin %}
+                        <a href="{% url 'create-announcement' %}" class="text-gray-500 text-sm">Add Notice</a>
+                    {% endif %}
+                </div>
+            </details>
+        </div>
+    
+        <div class="sidebar-links flex flex-col gap-2.5 text-gray-700 justify-end mt-8">
+            <h4 class="text-gray-400">Accounts</h4>
+            {% if user.is_authenticated %}
+                <div class="settings flex justify-between">
+                    <a href="{% url 'settings' %}">Settings</a>
+                    <i class="fas fa-cog darkgray-icon group-hover:text-blue-400"></i>
+                </div>
+
+                <div class="logout flex justify-between">
+                    <a href="{% url 'logout' %}">Logout </a>
+                    <i class="fas fa-sign-out-alt darkgray-icon group-hover:text-blue-400"></i>
+                </div>
+
+                <div class="home mt-6 flex justify-between">
+                    <a  href="" class='text-sm'>{{user.username}}</a>
+                    <i class="fa fa-user darkgray-icon text-sm "></i>
+                </div>
+            {% else %}
+                <div class="logout flex justify-between">
+                    <a href="{% url 'login' %}">Login </a>
+                    <i class="fas fa-sign-out-alt darkgray-icon group-hover:text-blue-400"></i>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="main-content col-span-12 lg:col-span-6 ">
+        <div class="header hidden h-20 p-6 border-b border-b-gray-100 shadow shadow-gray-100 lg:flex justify-end">
+            
+
+            {% if user.is_authenticated %}
+                <div class="notification flex gap-2 items-center justify-end">
+                    <i class="fa fa-bell darkgray-icon"></i>
+        
+                    <div class="hidden md:flex gap-3">
+                        <img src="{{ user.user_photo.url }}" alt="Emily" class="w-8 h-8 rounded-full">
+                        <h6 class="text-gray-500 font-medium">{{user.username}}</h6>
+                    </div>
+                    
+                </div>
+            {% endif %}
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<script src="{% static 'js/app.js' %}"></script>
+  
+</body>
+</html>
